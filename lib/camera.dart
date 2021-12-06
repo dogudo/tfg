@@ -72,7 +72,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 );
                 final ImagePicker _picker = ImagePicker();
                 final XFile? image =
-                    await _picker.pickImage(source: ImageSource.camera);
+                    await _picker.pickImage(source: ImageSource.gallery);
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => DisplayPictureScreen(
