@@ -58,9 +58,30 @@ class DisplayPictureScreen extends StatelessWidget {
 
 Future<String> processImage(String imagePath) async {
   final inputImage = InputImage.fromFilePath(imagePath);
+
   final textDetector = GoogleMlKit.vision.textDetectorV2();
   final recognisedText = await textDetector.processImage(inputImage,
       script: TextRecognitionOptions.KOREAN);
 
-  return recognisedText.text;
+  final translateLanguageModelManager =
+      GoogleMlKit.nlp.translateLanguageModelManager();
+  try {
+    var result = await translateLanguageModelManager.downloadModel('en');
+    print('Model downloaded [EN]: $result');
+    var other = await translateLanguageModelManager.downloadModel('ko');
+    print('Model downloaded: [KO]: $other');
+    print(await translateLanguageModelManager.getAvailableModels());
+  } catch (e) {
+    print(e.toString());
+  }
+  final onDeviceTranslator = GoogleMlKit.nlp.onDeviceTranslator(
+      sourceLanguage: TranslateLanguage.KOREAN,
+      targetLanguage: TranslateLanguage.ENGLISH);
+  final translatedText =
+      await onDeviceTranslator.translateText(recognisedText.text);
+
+  textDetector.close();
+  onDeviceTranslator.close();
+
+  return recognisedText.text + "\n----------\n" + translatedText;
 }
