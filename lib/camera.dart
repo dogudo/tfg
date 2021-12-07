@@ -5,14 +5,15 @@ import 'package:image_picker/image_picker.dart';
 
 import 'display_picture.dart';
 
+List<CameraDescription> cameras = [];
+
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
-  const TakePictureScreen({
+  TakePictureScreen({
     Key? key,
-    required this.camera,
   }) : super(key: key);
 
-  final CameraDescription camera;
+  final CameraDescription camera = cameras.first;
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -21,6 +22,7 @@ class TakePictureScreen extends StatefulWidget {
 class TakePictureScreenState extends State<TakePictureScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  bool flash = false;
 
   @override
   void initState() {
@@ -35,7 +37,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     );
 
     // Next, initialize the controller. This returns a Future.
-    _initializeControllerFuture = _controller.initialize();
+    _initializeControllerFuture = _controller.initialize().whenComplete(() =>
+        _controller
+            .setFlashMode(FlashMode.off)
+            .whenComplete(() => null)); // START WITH FLASH OFF
   }
 
   @override
@@ -64,7 +69,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: const Icon(Icons.image_outlined),
+              icon: const Icon(Icons.collections_outlined),
               tooltip: 'Show Snackbar',
               onPressed: () async {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -82,6 +87,22 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                     ),
                   ),
                 );
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                flash ? Icons.flash_on : Icons.flash_off,
+                color: Colors.white,
+                size: 28,
+              ),
+              tooltip: 'Go to the next page',
+              onPressed: () {
+                setState(() {
+                  flash = !flash;
+                });
+                flash
+                    ? _controller.setFlashMode(FlashMode.torch)
+                    : _controller.setFlashMode(FlashMode.off);
               },
             ),
             IconButton(
@@ -103,13 +124,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                     );
                   },
                 ));
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.flash_on),
-              tooltip: 'Go to the next page',
-              onPressed: () {
-                _controller.setFlashMode(FlashMode.torch);
               },
             ),
           ],

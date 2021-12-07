@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mugunghwa/camera.dart';
 
-List<CameraDescription> cameras = [];
-
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
@@ -116,8 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      TakePictureScreen(camera: cameras.first)),
+                builder: (context) => TakePictureScreen(),
+              ),
             );
           },
           tooltip: 'Camera',
