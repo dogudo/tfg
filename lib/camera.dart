@@ -105,6 +105,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 ));
               },
             ),
+            IconButton(
+              icon: const Icon(Icons.flash_on),
+              tooltip: 'Go to the next page',
+              onPressed: () {
+                _controller.setFlashMode(FlashMode.torch);
+              },
+            ),
           ],
           backgroundColor: Colors.transparent,
           elevation: 0,
