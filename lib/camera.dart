@@ -37,10 +37,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     );
 
     // Next, initialize the controller. This returns a Future.
-    _initializeControllerFuture = _controller.initialize().whenComplete(() =>
-        _controller
-            .setFlashMode(FlashMode.off)
-            .whenComplete(() => null)); // START WITH FLASH OFF
+    _initializeControllerFuture = _controller.initialize().whenComplete(
+        () => _controller.setFlashMode(FlashMode.off)); // START WITH FLASH OFF
   }
 
   @override
