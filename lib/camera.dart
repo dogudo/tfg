@@ -175,6 +175,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               // where it was saved.
               final image = await _controller.takePicture();
 
+              // Turn flash off after picture is taken
+              _controller.setFlashMode(FlashMode.off);
+
               // If the picture was taken, display it on a new screen.
               await Navigator.of(context).push(
                 MaterialPageRoute(
