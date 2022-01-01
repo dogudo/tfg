@@ -76,15 +76,17 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 final ImagePicker _picker = ImagePicker();
                 final XFile? image =
                     await _picker.pickImage(source: ImageSource.gallery);
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => DisplayPictureScreen(
-                      // Pass the automatically generated path to
-                      // the DisplayPictureScreen widget.
-                      imagePath: image!.path,
+                if (image != null) {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => DisplayPictureScreen(
+                        // Pass the automatically generated path to
+                        // the DisplayPictureScreen widget.
+                        imagePath: image.path,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
             ),
             IconButton(
