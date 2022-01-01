@@ -19,10 +19,18 @@ class TakePictureScreen extends StatefulWidget {
   TakePictureScreenState createState() => TakePictureScreenState();
 }
 
-class TakePictureScreenState extends State<TakePictureScreen> {
+class TakePictureScreenState extends State<TakePictureScreen>
+    with WidgetsBindingObserver {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
   bool flash = false;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _initializeControllerFuture = _controller.initialize();
+    }
+  }
 
   @override
   void initState() {
@@ -39,6 +47,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize().whenComplete(
         () => _controller.setFlashMode(FlashMode.off)); // START WITH FLASH OFF
+
+    WidgetsBinding.instance!.addObserver(this); // ADD OBSERVER
   }
 
   @override
@@ -46,6 +56,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     // Dispose of the controller when the widget is disposed.
     _controller.dispose();
     super.dispose();
+
+    WidgetsBinding.instance!.removeObserver(this); // REMOVE OBSERVER
   }
 
   @override
