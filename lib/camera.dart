@@ -191,6 +191,9 @@ class TakePictureScreenState extends State<TakePictureScreen>
 
               // Turn flash off after picture is taken
               _controller.setFlashMode(FlashMode.off);
+              setState(() {
+                flash = false;
+              });
 
               // If the picture was taken, display it on a new screen.
               await Navigator.of(context).push(
