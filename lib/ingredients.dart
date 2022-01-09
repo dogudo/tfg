@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mugunghwa/models/ingredient.dart';
+import 'package:mugunghwa/db/ingredient_database.dart';
+import 'package:mugunghwa/model/ingredient.dart';
 
 import 'add_ingredient.dart';
 /*
@@ -37,16 +38,35 @@ class AllergensScreen extends StatelessWidget {
 */
 
 class _IngredientsScreenState extends State<IngredientsScreen> {
-  final _ingredients = <Ingredient>[];
+  List<Ingredient> ingredients = <Ingredient>[];
+  bool isLoading = false;
   final _saved = <Ingredient>{};
   final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  @override
+  void initState() {
+    super.initState();
+    refreshIngredients();
+  }
+
+  @override
+  void dispose() {
+    //IngredientDatabase.instance.close();
+    super.dispose();
+  }
+
+  Future refreshIngredients() async {
+    setState(() => isLoading = true);
+    ingredients = await IngredientDatabase.instance.readAll();
+    setState(() => isLoading = false);
+  }
 
   Widget _buildIngredients() {
     return ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: _ingredients.length,
+        itemCount: ingredients.length,
         itemBuilder: (context, i) {
-          final item = _ingredients[i];
+          final item = ingredients[i];
 
           return _buildRow(item);
         });
@@ -56,7 +76,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
     final alreadySaved = _saved.contains(ingredient);
     return ListTile(
       title: Text(
-        ingredient.name,
+        ingredient.nameEng,
         style: _biggerFont,
       ),
       trailing: Icon(
@@ -80,7 +100,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Startup Name Generator'),
+        title: const Text('Ingredients'),
         actions: [
           IconButton(
             icon: const Icon(Icons.list),
@@ -89,8 +109,8 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
           ),
         ],
       ),
-      body: _ingredients.isEmpty
-          ? Center(child: Text('Empty'))
+      body: ingredients.isEmpty
+          ? const Center(child: Text('Empty'))
           : _buildIngredients(),
       floatingActionButton: FloatingActionButton(
         //check and fix this code, null checks missing
@@ -102,9 +122,8 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
               fullscreenDialog: true,
             ),
           );
-          setState(() {
-            _ingredients.add(ing!);
-          });
+          IngredientDatabase.instance.create(ing!);
+          refreshIngredients();
         },
         tooltip: 'Text',
         child: const Icon(Icons.add),
@@ -120,7 +139,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
             (ingredient) {
               return ListTile(
                 title: Text(
-                  ingredient.name,
+                  ingredient.nameEng,
                   style: _biggerFont,
                 ),
               );

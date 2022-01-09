@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'models/ingredient.dart';
+import 'model/ingredient.dart';
 
 class AddIngredientScreenState extends State<AddIngredientScreen> {
   late TextEditingController controller;
@@ -26,7 +25,11 @@ class AddIngredientScreenState extends State<AddIngredientScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pop(Ingredient(name: controller.text));
+              Navigator.of(context).pop(Ingredient(
+                  nameEng: controller.text,
+                  categoryId: 1,
+                  nameKor: '',
+                  scan: true));
             },
             icon: const Icon(Icons.save),
           ),

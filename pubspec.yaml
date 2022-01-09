@@ -39,7 +39,6 @@ dependencies:
   path_provider: ^2.0.7
   path: ^1.8.0
   image_picker: ^0.8.4+4
-  english_words: ^4.0.0
   sqflite: ^2.0.1
 
 dev_dependencies:
@@ -58,6 +57,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/ingredient.db
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
