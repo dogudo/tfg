@@ -109,8 +109,8 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
           ),
         ],
       ),
-      body: ingredients.isEmpty
-          ? const Center(child: Text('Empty'))
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
           : _buildIngredients(),
       floatingActionButton: FloatingActionButton(
         //check and fix this code, null checks missing
