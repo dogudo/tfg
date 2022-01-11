@@ -34,19 +34,25 @@ class DisplayPictureScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         // Provide an onPressed callback.
         onPressed: () async {
-          Future<String> text = processImage(imagePath);
+          Future<List<String>> text = processImage(imagePath);
           showModalBottomSheet(
             isScrollControlled: true,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
             context: context,
-            builder: (context) => FutureBuilder<String>(
+            builder: (context) => FutureBuilder<List<String>>(
                 future: text,
                 builder: (context, snapshot) {
                   return SafeArea(
                     child: snapshot.hasData
-                        ? Text(snapshot.data!)
+                        ? SingleChildScrollView(
+                            child: Wrap(children: [
+                            const Center(child: Text('Original (Korean)')),
+                            Center(child: Text(snapshot.data![0])),
+                            const Center(child: Text('Translation (English)')),
+                            Center(child: Text(snapshot.data![1])),
+                          ]))
                         : const Center(
                             heightFactor: 2.0,
                             child: CircularProgressIndicator()),
@@ -54,13 +60,14 @@ class DisplayPictureScreen extends StatelessWidget {
                 }),
           );
         },
-        child: const Icon(Icons.visibility),
+        child: const Icon(Icons.translate),
+        tooltip: 'Translate text',
       ),
     );
   }
 }
 
-Future<String> processImage(String imagePath) async {
+Future<List<String>> processImage(String imagePath) async {
   final inputImage = InputImage.fromFilePath(imagePath);
 
   final textDetector = GoogleMlKit.vision.textDetectorV2();
@@ -87,5 +94,5 @@ Future<String> processImage(String imagePath) async {
   textDetector.close();
   onDeviceTranslator.close();
 
-  return recognisedText.text + "\n----------\n" + translatedText;
+  return [recognisedText.text, translatedText];
 }
