@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
+import 'custom_bottom_sheet.dart' as bs;
+
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
@@ -35,7 +37,7 @@ class DisplayPictureScreen extends StatelessWidget {
         // Provide an onPressed callback.
         onPressed: () async {
           Future<List<String>> text = processImage(imagePath);
-          showModalBottomSheet(
+          bs.showModalBottomSheet(
             isScrollControlled: true,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -45,18 +47,36 @@ class DisplayPictureScreen extends StatelessWidget {
                 future: text,
                 builder: (context, snapshot) {
                   return SafeArea(
-                    child: snapshot.hasData
-                        ? SingleChildScrollView(
-                            child: Wrap(children: [
-                            const Center(child: Text('Original (Korean)')),
-                            Center(child: Text(snapshot.data![0])),
-                            const Center(child: Text('Translation (English)')),
-                            Center(child: Text(snapshot.data![1])),
-                          ]))
-                        : const Center(
-                            heightFactor: 2.0,
-                            child: CircularProgressIndicator()),
-                  );
+                      child: snapshot.hasData
+                          ? SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(snapshot.data![0],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2),
+                                      Text('Original (🇰🇷 Korean)',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                      Text('\n' + snapshot.data![1],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2),
+                                      Text('Translation (🇬🇧 English)',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption),
+                                    ]),
+                              ),
+                            )
+                          : const Center(
+                              heightFactor: 2.0,
+                              child: CircularProgressIndicator()));
                 }),
           );
         },
