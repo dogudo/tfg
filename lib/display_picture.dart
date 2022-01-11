@@ -34,20 +34,24 @@ class DisplayPictureScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         // Provide an onPressed callback.
         onPressed: () async {
-          final text = await processImage(imagePath);
+          Future<String> text = processImage(imagePath);
           showModalBottomSheet(
             isScrollControlled: true,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
             context: context,
-            builder: (context) {
-              // Using Wrap makes the bottom sheet height the height of the content.
-              // Otherwise, the height will be half the height of the screen.
-              return Wrap(children: [
-                Text(text),
-              ]);
-            },
+            builder: (context) => FutureBuilder<String>(
+                future: text,
+                builder: (context, snapshot) {
+                  return SafeArea(
+                    child: snapshot.hasData
+                        ? Text(snapshot.data!)
+                        : const Center(
+                            heightFactor: 2.0,
+                            child: CircularProgressIndicator()),
+                  );
+                }),
           );
         },
         child: const Icon(Icons.visibility),
