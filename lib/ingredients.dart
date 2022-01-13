@@ -57,7 +57,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
 
   Future refreshIngredients() async {
     setState(() => isLoading = true);
-    ingredients = await IngredientDatabase.instance.readAll();
+    ingredients = await IngredientDatabase.instance.readAllScan();
     setState(() => isLoading = false);
   }
 
@@ -111,7 +111,9 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _buildIngredients(),
+          : ingredients.isEmpty
+              ? const Center(child: Text('Empty'))
+              : _buildIngredients(),
       floatingActionButton: FloatingActionButton(
         //check and fix this code, null checks missing
         onPressed: () async {

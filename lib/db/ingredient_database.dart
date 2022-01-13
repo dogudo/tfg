@@ -109,6 +109,14 @@ class IngredientDatabase {
     return result.map((json) => Ingredient.fromJson(json)).toList();
   }
 
+  Future<List<Ingredient>> readAllScan() async {
+    final db = await instance.database;
+    final result = await db.query(tableIngredient,
+        where: '${IngredientFields.scan} = 1'); //orderBy?
+
+    return result.map((json) => Ingredient.fromJson(json)).toList();
+  }
+
   Future<int> update(Ingredient ingredient) async {
     final db = await instance.database;
 

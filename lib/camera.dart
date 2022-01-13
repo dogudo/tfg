@@ -160,14 +160,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               // If the Future is complete, display the preview.
-              final scale = 1 /
-                  (_controller.value.aspectRatio *
-                      MediaQuery.of(context).size.aspectRatio);
-              return Transform.scale(
-                scale: scale,
-                alignment: Alignment.topCenter,
-                child: CameraPreview(_controller),
-              );
+              return CameraPreview(_controller);
               // return CameraPreview(_controller);
             } else {
               // Otherwise, display a loading indicator.
@@ -175,7 +168,6 @@ class TakePictureScreenState extends State<TakePictureScreen>
             }
           },
         ),
-        //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
           // Provide an onPressed callback.
           onPressed: () async {
