@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,8 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'custom_bottom_sheet.dart' as bs;
 import 'db/ingredient_database.dart';
 import 'model/ingredient.dart';
+
+import 'package:http/http.dart' as http;
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
@@ -216,7 +219,9 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     final onDeviceTranslator = GoogleMlKit.nlp.onDeviceTranslator(
         sourceLanguage: TranslateLanguage.KOREAN,
         targetLanguage: TranslateLanguage.ENGLISH);
-    final translatedText =
+
+    var translatedText = await getTranslationPapago(recognisedText.text);
+    translatedText ??=
         await onDeviceTranslator.translateText(recognisedText.text);
 
     textDetector.close();
@@ -244,5 +249,31 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     }
     print("done");
     return matches;
+  }
+}
+
+Future<String?> getTranslationPapago(String text) async {
+  String clientId = "lKdraqwfxdXrVcxhgXkh";
+  String clientSecret = "7sfeYSECYh";
+  String contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+  String _url = "https://openapi.naver.com/v1/papago/n2mt";
+
+  http.Response trans = await http.post(
+    Uri.parse(_url),
+    headers: {
+      'Content-Type': contentType,
+      'X-Naver-Client-Id': clientId,
+      'X-Naver-Client-Secret': clientSecret
+    },
+    body: {
+      'source': "ko",
+      'target': "en",
+      'text': text,
+    },
+  );
+  if (trans.statusCode == 200) {
+    var dataJson = jsonDecode(trans.body);
+    var resultPapago = dataJson['message']['result']['translatedText'];
+    return resultPapago;
   }
 }
