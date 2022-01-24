@@ -22,8 +22,9 @@ class HomeScreen extends StatelessWidget {
       // horizontal).
       body: Center(
         child: Text(
-          'You have pushed the button this many times:',
+          'Scan an ingredients list to get started',
           style: Theme.of(context).textTheme.headline4,
+          textAlign: TextAlign.center,
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -36,7 +37,7 @@ class HomeScreen extends StatelessWidget {
           );
         },
         tooltip: 'Camera',
-        child: const Icon(Icons.camera),
+        child: const Icon(Icons.document_scanner),
       ),
     );
   }

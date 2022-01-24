@@ -49,7 +49,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Display the Picture'),
+        title: const Text('Scan results'),
       ),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.

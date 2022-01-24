@@ -20,7 +20,6 @@ class AddIngredientScreenState extends State<AddIngredientScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //backgroundColor: Color(0xFF6200EE), maybe use this color
         title: const Text('Añadir ingrediente'),
         actions: [
           IconButton(

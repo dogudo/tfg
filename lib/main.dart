@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mugunghwa/camera.dart';
 
+import 'help.dart';
 import 'ingredients.dart';
 import 'home.dart';
 
@@ -25,20 +26,20 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge); //NEEDED?
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Mugunghwa',
+      title: 'NokScanner',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.teal, //purple?
-      ),
-      home: const MyHomePage(title: 'Mugunghwa'),
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.green //purple?
+          ),
+      home: const MyHomePage(title: 'NokScanner'),
     );
   }
 }
@@ -93,6 +94,19 @@ class _MyHomePageState extends State<MyHomePage> {
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.help_outline_rounded),
+              tooltip: 'Show Help',
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const HelpScreen(),
+                    ));
+              },
+            ),
+          ],
         ),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
@@ -106,8 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
               label: 'History',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Alérgenos',
+              icon: Icon(Icons.list),
+              label: 'Allergens',
             ),
           ],
           currentIndex: _selectedIndex,

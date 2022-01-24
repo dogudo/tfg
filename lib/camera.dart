@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mugunghwa/help.dart';
 
 import 'display_picture.dart';
 
@@ -80,11 +81,8 @@ class TakePictureScreenState extends State<TakePictureScreen>
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.collections_outlined),
-              tooltip: 'Show Snackbar',
+              tooltip: 'Open Gallery',
               onPressed: () async {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')),
-                );
                 final ImagePicker _picker = ImagePicker();
                 final XFile? image =
                     await _picker.pickImage(source: ImageSource.gallery);
@@ -107,7 +105,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
                 color: Colors.white,
                 size: 28,
               ),
-              tooltip: 'Go to the next page',
+              tooltip: 'Toggle Flash',
               onPressed: () {
                 setState(() {
                   flash = !flash;
@@ -119,23 +117,13 @@ class TakePictureScreenState extends State<TakePictureScreen>
             ),
             IconButton(
               icon: const Icon(Icons.help_outline_rounded),
-              tooltip: 'Go to the next page',
+              tooltip: 'Show Help',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute<void>(
-                  builder: (BuildContext context) {
-                    return Scaffold(
-                      appBar: AppBar(
-                        title: const Text('Next page'),
-                      ),
-                      body: const Center(
-                        child: Text(
-                          'This is the next page',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                    );
-                  },
-                ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const HelpScreen(),
+                    ));
               },
             ),
           ],

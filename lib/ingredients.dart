@@ -41,7 +41,6 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
   List<Ingredient> ingredients = <Ingredient>[];
   bool isLoading = false;
   final _saved = <Ingredient>{};
-  final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
   void initState() {
@@ -77,7 +76,9 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
     return ListTile(
       title: Text(
         ingredient.nameEng,
-        style: _biggerFont,
+      ),
+      subtitle: Text(
+        ingredient.nameKor,
       ),
       trailing: Icon(
         alreadySaved ? Icons.favorite : Icons.favorite_border,
@@ -115,7 +116,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
               ? const Center(child: Text('Empty'))
               : _buildIngredients(),
       floatingActionButton: FloatingActionButton(
-        //check and fix this code, null checks missing
+        // CHECK AND FIX THIS CODE, NULL CHECKS MISSING
         onPressed: () async {
           Ingredient? ing = await Navigator.push(
             context,
@@ -142,7 +143,9 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
               return ListTile(
                 title: Text(
                   ingredient.nameEng,
-                  style: _biggerFont,
+                ),
+                subtitle: Text(
+                  ingredient.nameKor,
                 ),
               );
             },
